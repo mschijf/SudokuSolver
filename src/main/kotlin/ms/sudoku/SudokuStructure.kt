@@ -17,9 +17,8 @@ class SudokuStructure(val sudokuType: SudokuType) {
     }
 
     private fun makeCellMap(): Map<Point, Cell> {
-        val max = if (sudokuType == SudokuType.VIJFLING) 20 else 8
-        return (0..max)
-            .flatMap { y -> (0..max).map { x -> Cell(pos(x, y), null, mutableSetOf(1,2,3,4,5,6,7,8,9)) } }
+        return (0..20)
+            .flatMap { y -> (0..20).map { x -> Cell(pos(x, y), null, mutableSetOf(1,2,3,4,5,6,7,8,9)) } }
             .associateBy { it.pos }
     }
 
