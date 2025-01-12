@@ -8,15 +8,21 @@ data class Group(
     }
 
     fun hasUnqiueCellValue(): Pair<Cell, Int>? {
-        cellList.filter { cell -> cell.isNotSolved() }.forEach { cell ->
-            cell.possibleValues.forEach { aValue ->
-                val found = cellList.filter { it != cell }.none { aValue in it.possibleValues }
-                if (found) {
-                    return Pair(cell, aValue)
-                }
-            }
-        }
-        return null
+        val value = (1..9).firstOrNull{ v -> cellList.count { v in it.possibleValues } == 1}
+        return if (value == null)
+            null
+        else
+            Pair(cellList.first { value in it.possibleValues }, value)
+
+//        cellList.filter { cell -> cell.isNotSolved() }.forEach { cell ->
+//            cell.possibleValues.forEach { aValue ->
+//                val found = cellList.filter { it != cell }.none { aValue in it.possibleValues }
+//                if (found) {
+//                    return Pair(cell, aValue)
+//                }
+//            }
+//        }
+//        return null
     }
 
     fun verifyOk(): Boolean {
