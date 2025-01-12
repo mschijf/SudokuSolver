@@ -11,8 +11,9 @@ class SudokuStructureVijfling {
     val allGroups: List<Group> = makeHorizontalLineGroups() + makeVerticalLineGroups() + makeSquareGroups()
     val allCells: List<Cell> = allGroups.flatMap { it.cellList }.distinct()
 
+    private val cellToGroupMap = mutableMapOf<Cell, List<Group>>()
     fun getCellGroups(aCell: Cell): List<Group> {
-        return allGroups.filter { it.hasCell(aCell) }
+        return cellToGroupMap.getOrPut(aCell) { allGroups.filter { it.hasCell(aCell) } }
     }
 
     private fun makeCellMap(): Map<Point, Cell> {
