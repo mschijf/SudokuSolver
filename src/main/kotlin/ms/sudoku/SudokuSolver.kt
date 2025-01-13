@@ -111,10 +111,6 @@ class SudokuSolver(val sudoku: SudokuStructure) {
             ?.getCellWithUniqueValue()
         return if (result != null) SolutionStep(result.first, result.second) else null
     }
-
-    fun printSudoku() {
-        sudoku.printSudoku()
-    }
 }
 
 data class SolutionStep(val cell: Cell, val value: Int)
