@@ -22,8 +22,8 @@ fun main() {
     sudoku.initialFill(inputCellMap)
     val sudokuSolver = SudokuSolver(sudoku)
     sudoku.printSudoku()
-    sudokuSolver.solve()
-    sudoku.printSudoku()
+//    sudokuSolver.solve()
+//    sudoku.printSudoku()
     sudokuSolver.solveRecursive()
     sudoku.printSudoku()
 }

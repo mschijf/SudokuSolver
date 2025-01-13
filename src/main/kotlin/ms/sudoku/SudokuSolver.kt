@@ -4,26 +4,26 @@ import ms.ms.sudoku.SudokuStructure
 
 class SudokuSolver(val sudoku: SudokuStructure) {
 
-    fun solve() {
-        println("start nog onbekend: ${sudoku.allCells.count { it.isNotSolved() }}")
-        while (sudoku.allCells.any { it.isNotSolved() }) {
-            val solutionStep = findNextStep()
-            if (solutionStep != null) {
-                sudoku.setValue(solutionStep.cell, solutionStep.value)
-            } else {
-                println("No solution found with algoritme 1 en algorithm 2")
-                break
-            }
-        }
-
-        println("einde alles: nog onbekend: ${sudoku.allCells.count { it.isNotSolved() }}")
-        if (sudoku.allGroups.all{it.verifyOk()}) {
-            println("Verified OK")
-        } else {
-            println("Verified NOT ok")
-        }
-    }
-
+//    fun solve() {
+//        println("start nog onbekend: ${sudoku.allCells.count { it.isNotSolved() }}")
+//        while (sudoku.allCells.any { it.isNotSolved() }) {
+//            val solutionStep = findNextStep()
+//            if (solutionStep != null) {
+//                solutionStep.cell.setValue(solutionStep.value)
+//            } else {
+//                println("No solution found with algoritme 1 en algorithm 2")
+//                break
+//            }
+//        }
+//
+//        println("einde alles: nog onbekend: ${sudoku.allCells.count { it.isNotSolved() }}")
+//        if (sudoku.allGroups.all{it.verifyOk()}) {
+//            println("Verified OK")
+//        } else {
+//            println("Verified NOT ok")
+//        }
+//    }
+//
     fun solveRecursive(): Boolean {
         if (sudoku.allFilledIn()) {
             return true
@@ -83,12 +83,13 @@ class SudokuSolver(val sudoku: SudokuStructure) {
     }
 
     private fun takebackLastSolutionStep(step: SolutionStep) {
-        step.cell.value = null
-        sudoku.recalculate()
+        step.cell.resetValue()
+        sudoku.allCells.forEach { it.possibleValues += sudoku.defaultValueSet }
+        sudoku.allCells.filter { it.isSolved() }.forEach { it.recalculate() }
     }
 
     private fun fillInSolutionStep(step: SolutionStep) {
-        sudoku.setValue(cell = step.cell, value = step.value)
+        step.cell.setValue(step.value)
     }
 
     private fun findNextStep(): SolutionStep? {

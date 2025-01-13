@@ -1,6 +1,6 @@
 package ms.sudoku
 
-data class Group(
+class Group(
     val cellList: List<Cell>) {
 
     fun hasCell(cell: Cell): Boolean {

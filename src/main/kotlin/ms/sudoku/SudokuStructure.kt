@@ -7,39 +7,22 @@ import tool.coordinate.twodimensional.pos
 
 class SudokuStructure(val sudokuType: SudokuType) {
 
-    private val defaultValueSet = setOf(1,2,3,4,5,6,7,8,9)
+    val defaultValueSet = setOf(1,2,3,4,5,6,7,8,9)
 
     private val cellMap = makeCellMap()
     val allGroups: List<Group> = makeHorizontalLineGroups() + makeVerticalLineGroups() + makeSquareGroups()
     val allCells: List<Cell> = allGroups.flatMap { it.cellList }.distinct()
 
-    private val cellToGroupMap = mutableMapOf<Cell, List<Group>>()
-    fun getCellGroups(aCell: Cell): List<Group> {
-        return cellToGroupMap.getOrPut(aCell) { allGroups.filter { it.hasCell(aCell) } }
+    init {
+        allCells.forEach { cell ->
+            cell.initializeGroups( allGroups.filter { it.hasCell(cell) } )
+        }
     }
 
     fun initialFill(initialValueMap: Map<Point, Int>) {
         allCells
             .filter { it.pos in initialValueMap }
-            .forEach {
-                setValue(it, initialValueMap[it.pos]!!)
-            }
-    }
-
-    fun setValue(cell: Cell, value: Int) {
-        cell.value = value
-        cell.possibleValues.clear()
-        val groups = getCellGroups(cell)
-        groups.forEach { group ->
-            group.cellList.forEach { cell ->
-                cell.possibleValues -= value
-            }
-        }
-    }
-
-    fun recalculate() {
-        allCells.forEach { it.possibleValues += defaultValueSet }
-        allCells.filter { it.isSolved() }.forEach { setValue( it, it.value!! ) }
+            .forEach { cell -> cell.setValue(initialValueMap[cell.pos]!!) }
     }
 
     fun allFilledIn(): Boolean {
@@ -53,7 +36,7 @@ class SudokuStructure(val sudokuType: SudokuType) {
 
     private fun makeCellMap(): Map<Point, Cell> {
         return (0..20)
-            .flatMap { y -> (0..20).map { x -> Cell(pos(x, y), null, defaultValueSet.toMutableSet()) } }
+            .flatMap { y -> (0..20).map { x -> Cell(pos(x, y), defaultValueSet.toMutableSet()) } }
             .associateBy { it.pos }
     }
 
