@@ -7,7 +7,8 @@ import java.io.File
 import kotlin.io.bufferedReader
 
 fun main() {
-    val inputLines = File("data/sudoku_vijfling").bufferedReader().readLines()
+    val sudokuType = SudokuType.NORMAL
+    val inputLines = File("data/sudoku_extreme_2025012").bufferedReader().readLines()
     val inputCellMap = inputLines
         .flatMapIndexed { y, line ->
             line.padEnd(21, '.')
@@ -16,9 +17,10 @@ fun main() {
         .filter { it.second > 0 }
         .toMap()
 
-//    val sudoku = SudokuSolver(SudokuType.NORMAL, inputCellMap)
-    val sudoku = SudokuSolver(SudokuType.VIJFLING, inputCellMap)
+    val sudoku = SudokuSolver(sudokuType, inputCellMap)
     sudoku.printSudoku()
     sudoku.solve()
+    sudoku.printSudoku()
+    sudoku.solveRecursive()
     sudoku.printSudoku()
 }

@@ -7,22 +7,11 @@ data class Group(
         return cell in cellList
     }
 
-    fun hasUnqiueCellValue(): Pair<Cell, Int>? {
+    fun getCellWithUniqueValue(): Pair<Cell, Int>? {
         val value = (1..9).firstOrNull{ v -> cellList.count { v in it.possibleValues } == 1}
-        return if (value == null)
-            null
-        else
-            Pair(cellList.first { value in it.possibleValues }, value)
-
-//        cellList.filter { cell -> cell.isNotSolved() }.forEach { cell ->
-//            cell.possibleValues.forEach { aValue ->
-//                val found = cellList.filter { it != cell }.none { aValue in it.possibleValues }
-//                if (found) {
-//                    return Pair(cell, aValue)
-//                }
-//            }
-//        }
-//        return null
+        if (value != null)
+            return Pair(cellList.first { value in it.possibleValues }, value)
+        return null
     }
 
     fun verifyOk(): Boolean {
