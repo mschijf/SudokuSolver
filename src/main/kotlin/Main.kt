@@ -9,7 +9,8 @@ import kotlin.io.bufferedReader
 
 fun main() {
     val sudokuType = SudokuType.NORMAL
-    val inputLines = File("data/sudoku_extreme_2025012").bufferedReader().readLines()
+//    val inputLines = File("data/sudoku_extreme_2025012").bufferedReader().readLines()
+    val inputLines = File("data/sudoku_empty").bufferedReader().readLines()
     val inputCellMap = inputLines
         .flatMapIndexed { y, line ->
             line.padEnd(21, '.')
@@ -22,8 +23,9 @@ fun main() {
     sudoku.initialFill(inputCellMap)
     val sudokuSolver = SudokuSolver(sudoku)
     sudoku.printSudoku()
-//    sudokuSolver.solve()
-//    sudoku.printSudoku()
-    sudokuSolver.solveRecursive()
+    println("=====================================================")
+//    sudokuSolver.solveRecursive()
+    val x = sudokuSolver.countAll()
+    println("totaal aantal oplossingen: $x")
     sudoku.printSudoku()
 }

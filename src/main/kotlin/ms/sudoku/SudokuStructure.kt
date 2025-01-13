@@ -22,21 +22,16 @@ class SudokuStructure(val sudokuType: SudokuType) {
     fun initialFill(initialValueMap: Map<Point, Int>) {
         allCells
             .filter { it.pos in initialValueMap }
-            .forEach { cell -> cell.setValue(initialValueMap[cell.pos]!!) }
+            .forEach { cell -> cell.value = initialValueMap[cell.pos]!! }
     }
 
     fun allFilledIn(): Boolean {
         return allCells.all { cell -> cell.isSolved() }
     }
 
-    fun illegal(): Boolean {
-        return allCells.any { cell -> cell.isNotSolved() && cell.possibleValues.isEmpty() }
-    }
-
-
     private fun makeCellMap(): Map<Point, Cell> {
         return (0..20)
-            .flatMap { y -> (0..20).map { x -> Cell(pos(x, y), defaultValueSet.toMutableSet()) } }
+            .flatMap { y -> (0..20).map { x -> Cell(pos(x, y) ) } }
             .associateBy { it.pos }
     }
 
