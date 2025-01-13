@@ -1,5 +1,6 @@
 package ms
 
+import ms.ms.sudoku.SudokuStructure
 import ms.ms.sudoku.SudokuType
 import ms.sudoku.SudokuSolver
 import tool.coordinate.twodimensional.pos
@@ -17,10 +18,12 @@ fun main() {
         .filter { it.second > 0 }
         .toMap()
 
-    val sudoku = SudokuSolver(sudokuType, inputCellMap)
+    val sudoku = SudokuStructure(sudokuType)
+    sudoku.initialFill(inputCellMap)
+    val sudokuSolver = SudokuSolver(sudoku)
     sudoku.printSudoku()
-    sudoku.solve()
+    sudokuSolver.solve()
     sudoku.printSudoku()
-    sudoku.solveRecursive()
+    sudokuSolver.solveRecursive()
     sudoku.printSudoku()
 }

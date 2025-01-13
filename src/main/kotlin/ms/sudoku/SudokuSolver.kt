@@ -1,16 +1,8 @@
 package ms.sudoku
 
 import ms.ms.sudoku.SudokuStructure
-import ms.ms.sudoku.SudokuType
-import tool.coordinate.twodimensional.Point
 
-class SudokuSolver(sudokuType: SudokuType, initialValueMap: Map<Point, Int>) {
-
-    private val sudoku = SudokuStructure(sudokuType)
-
-    init {
-        sudoku.initialFill(initialValueMap)
-    }
+class SudokuSolver(val sudoku: SudokuStructure) {
 
     fun solve() {
         println("start nog onbekend: ${sudoku.allCells.count { it.isNotSolved() }}")
