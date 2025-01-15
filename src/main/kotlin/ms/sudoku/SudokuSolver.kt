@@ -1,7 +1,5 @@
 package ms.sudoku
 
-import ms.ms.sudoku.SudokuStructure
-
 class SudokuSolver(val sudoku: SudokuStructure) {
 
     private val possibleCellValues = sudoku.allCells.associate { it to mutableSetOf<Int>() }
@@ -40,23 +38,12 @@ class SudokuSolver(val sudoku: SudokuStructure) {
         return false
     }
 
-    val sudokuHashValue = Array<Int>(81) { 0 }
-    val cache = mutableMapOf<Array<Int>, Long>()
-
-//    var totalCount = 0
     fun countAll(): Long {
         if (sudoku.allFilledIn()) {
-//            totalCount++
-//            if (totalCount % 10_000 == 0) {
-//                println("counted: $totalCount, upperleft ${sudoku.allCells[0]}, middle: ${sudoku.allCells[40]}")
-//            }
             return 1L
         }
         if (illegal() ) {
             return 0L
-        }
-        if (sudokuHashValue in cache) {
-            return cache[sudokuHashValue]!!
         }
 
         val solutionStep = findNextStep()
@@ -74,7 +61,6 @@ class SudokuSolver(val sudoku: SudokuStructure) {
                 takeBackLastSolutionStep(solutionStep)
             }
         }
-        cache[sudokuHashValue] = count
         return count
     }
 
@@ -83,12 +69,10 @@ class SudokuSolver(val sudoku: SudokuStructure) {
     }
 
     private fun fillInSolutionStep(step: SolutionStep) {
-        sudokuHashValue[step.cell.pos.x*9 + step.cell.pos.y] = step.value
         step.cell.setValue(step.value)
     }
 
     private fun takeBackLastSolutionStep(step: SolutionStep) {
-        sudokuHashValue[step.cell.pos.x*9 + step.cell.pos.y] = 0
         step.cell.resetValue()
         recalculatePossibleValues()
     }
@@ -143,7 +127,7 @@ class SudokuSolver(val sudoku: SudokuStructure) {
     private fun Cell.recalculate() {
         if (this.value != null) {
             this.possibleValues().clear()
-            this.inGroups().forEach { group ->
+            this.inGroups.forEach { group ->
                 group.cellList.forEach { cell ->
                     cell.possibleValues() -= this.value!!
                 }
@@ -159,5 +143,3 @@ class SudokuSolver(val sudoku: SudokuStructure) {
 }
 
 data class SolutionStep(val cell: Cell, val value: Int)
-
-//1_631_690_923_660_279_808
