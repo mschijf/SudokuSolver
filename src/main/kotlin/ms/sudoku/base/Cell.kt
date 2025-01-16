@@ -1,4 +1,4 @@
-package ms.sudoku
+package ms.sudoku.base
 
 import tool.coordinate.twodimensional.Point
 

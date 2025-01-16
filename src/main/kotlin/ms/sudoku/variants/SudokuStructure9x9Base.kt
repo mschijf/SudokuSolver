@@ -1,18 +1,30 @@
-package ms.sudoku
+package ms.sudoku.variants
 
+import ms.sudoku.base.Cell
+import ms.sudoku.base.Group
+import ms.sudoku.base.SudokuStructure
 import tool.coordinate.twodimensional.Point
 import tool.coordinate.twodimensional.pos
+import kotlin.collections.plus
+import kotlin.collections.plusAssign
 
-class SudokuStructureNormal() : SudokuStructure () {
+abstract class SudokuStructure9x9Base() : SudokuStructure() {
+
+    override fun getDefaultSetDefinition() = setOf(1,2,3,4,5,6,7,8,9)
 
     override fun makeGroups(): List<Group> {
         val cellMap = makeCellMap()
-        return makeHorizontalLineGroups(cellMap) + makeVerticalLineGroups(cellMap) + makeSquareGroups(cellMap)
+        return makeHorizontalLineGroups(cellMap) +
+                makeVerticalLineGroups(cellMap) +
+                makeSquareGroups(cellMap) +
+                makeExtraGroups(cellMap)
     }
+
+    protected abstract fun makeExtraGroups(cellMap: Map<Point, Cell>): List<Group>
 
     private fun makeCellMap(): Map<Point, Cell> {
         return (0..8)
-            .flatMap { y -> (0..8).map { x -> Cell(pos(x, y) ) } }
+            .flatMap { y -> (0..8).map { x -> Cell(pos(x, y)) } }
             .associateBy { it.pos }
     }
 
@@ -51,3 +63,5 @@ class SudokuStructureNormal() : SudokuStructure () {
         println(" +-----------+-----------+-----------+")
     }
 }
+
+

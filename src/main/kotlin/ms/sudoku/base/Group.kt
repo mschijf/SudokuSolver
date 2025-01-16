@@ -1,4 +1,4 @@
-package ms.sudoku
+package ms.sudoku.base
 
 data class Group(
     val cellList: List<Cell>) {

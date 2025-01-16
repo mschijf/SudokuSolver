@@ -1,10 +1,17 @@
-package ms.sudoku
+package ms.sudoku.variants
 
+import ms.sudoku.base.Cell
+import ms.sudoku.base.Group
+import ms.sudoku.base.SudokuStructure
 import tool.coordinate.twodimensional.Point
 import tool.coordinate.twodimensional.pos
 import tool.coordinate.twodimensional.printAsGrid
+import kotlin.collections.plus
+import kotlin.collections.plusAssign
 
-class SudokuStructureVijfling() : SudokuStructure () {
+class SudokuStructureVijfling() : SudokuStructure() {
+
+    override fun getDefaultSetDefinition() = setOf(1,2,3,4,5,6,7,8,9)
 
     override fun makeGroups(): List<Group> {
         val cellMap = makeCellMap()
@@ -13,42 +20,42 @@ class SudokuStructureVijfling() : SudokuStructure () {
 
     private fun makeCellMap(): Map<Point, Cell> {
         return (0..20)
-            .flatMap { y -> (0..20).map { x -> Cell(pos(x, y) ) } }
+            .flatMap { y -> (0..20).map { x -> Cell(pos(x, y)) } }
             .associateBy { it.pos }
     }
 
     private fun makeHorizontalLineGroups(cellMap: Map<Point, Cell>): List<Group> {
-        val rows1 = (0..8).map {y -> (0..8).map { x -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
-        val rows2 = (0..8).map {y -> (12..20).map { x -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
+        val rows1 = (0..8).map {y -> (0..8).map { x -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
+        val rows2 = (0..8).map {y -> (12..20).map { x -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
 
-        val rows3 = (6..14).map {y -> (6..14).map { x -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
+        val rows3 = (6..14).map {y -> (6..14).map { x -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
 
-        val rows4 = (12..20).map {y -> (0..8).map { x -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
-        val rows5 = (12..20).map {y -> (12..20).map { x -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
+        val rows4 = (12..20).map {y -> (0..8).map { x -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
+        val rows5 = (12..20).map {y -> (12..20).map { x -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
 
         return rows1 + rows2 + rows3 + rows4 + rows5
     }
 
     private fun makeVerticalLineGroups(cellMap: Map<Point, Cell>): List<Group> {
-        val cols1 = (0..8).map {x -> (0..8).map { y -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
-        val cols2 = (0..8).map {x -> (12..20).map { y -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
+        val cols1 = (0..8).map {x -> (0..8).map { y -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
+        val cols2 = (0..8).map {x -> (12..20).map { y -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
 
-        val cols3 = (6..14).map {x -> (6..14).map { y -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
+        val cols3 = (6..14).map {x -> (6..14).map { y -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
 
-        val cols4 = (12..20).map {x -> (0..8).map { y -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
-        val cols5 = (12..20).map {x -> (12..20).map { y -> cellMap[pos(x,y)]!! } }.map{ cellList -> Group(cellList) }
+        val cols4 = (12..20).map {x -> (0..8).map { y -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
+        val cols5 = (12..20).map {x -> (12..20).map { y -> cellMap[pos(x, y)]!! } }.map{ cellList -> Group(cellList) }
 
         return cols1 + cols2 + cols3 + cols4 + cols5
     }
 
     private fun makeSquareGroups(cellMap: Map<Point, Cell>): List<Group> {
-        val squares1 = this.makeLocalSquareGroups(pos(0,0), cellMap)
-        val squares2 = this.makeLocalSquareGroups(pos(12,0), cellMap)
+        val squares1 = this.makeLocalSquareGroups(pos(0, 0), cellMap)
+        val squares2 = this.makeLocalSquareGroups(pos(12, 0), cellMap)
 
-        val squares3 = this.makeLocalSquareGroups(pos(6,6), cellMap)
+        val squares3 = this.makeLocalSquareGroups(pos(6, 6), cellMap)
 
-        val squares4 = this.makeLocalSquareGroups(pos(0,12), cellMap)
-        val squares5 = this.makeLocalSquareGroups(pos(12,12), cellMap)
+        val squares4 = this.makeLocalSquareGroups(pos(0, 12), cellMap)
+        val squares5 = this.makeLocalSquareGroups(pos(12, 12), cellMap)
 
         return squares1 + squares2 + squares3 + squares4 + squares5
     }
@@ -96,6 +103,6 @@ class SudokuStructureVijfling() : SudokuStructure () {
             val cellChar = if (pos in cellMap) cellMap[pos]!!.value?.toString() ?: "." else " "
             if (squareEnd(pos)) "$cellChar |" else cellChar
         }
-        printTopLine(pos(0,21))
+        printTopLine(pos(0, 21))
     }
 }

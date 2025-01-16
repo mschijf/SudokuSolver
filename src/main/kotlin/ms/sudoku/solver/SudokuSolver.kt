@@ -1,4 +1,8 @@
-package ms.sudoku
+package ms.sudoku.solver
+
+import ms.sudoku.base.Cell
+import ms.sudoku.base.Group
+import ms.sudoku.base.SudokuStructure
 
 class SudokuSolver(val sudoku: SudokuStructure) {
 

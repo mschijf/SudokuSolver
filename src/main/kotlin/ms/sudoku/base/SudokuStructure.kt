@@ -1,10 +1,10 @@
-package ms.sudoku
+package ms.sudoku.base
 
 import tool.coordinate.twodimensional.Point
 
 abstract class SudokuStructure() {
 
-    val defaultValueSet = setOf(1,2,3,4,5,6,7,8,9)
+    val defaultValueSet = getDefaultSetDefinition()
 
     val allGroups: List<Group> = makeGroups()
     val allCells: List<Cell> = allGroups.flatMap { it.cellList }.distinct()
@@ -15,6 +15,7 @@ abstract class SudokuStructure() {
         }
     }
 
+    protected abstract fun getDefaultSetDefinition(): Set<Int>
     protected abstract fun makeGroups(): List<Group>
 
     fun initialFill(initialValueMap: Map<Point, Int>) {
