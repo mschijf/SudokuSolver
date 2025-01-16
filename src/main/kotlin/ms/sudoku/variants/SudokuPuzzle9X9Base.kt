@@ -2,13 +2,13 @@ package ms.sudoku.variants
 
 import ms.sudoku.base.Cell
 import ms.sudoku.base.Group
-import ms.sudoku.base.SudokuStructure
+import ms.sudoku.base.SudokuPuzzle
 import tool.coordinate.twodimensional.Point
 import tool.coordinate.twodimensional.pos
 import kotlin.collections.plus
 import kotlin.collections.plusAssign
 
-abstract class SudokuStructure9x9Base() : SudokuStructure() {
+abstract class SudokuPuzzle9X9Base() : SudokuPuzzle() {
 
     override fun getDefaultSetDefinition() = setOf(1,2,3,4,5,6,7,8,9)
 

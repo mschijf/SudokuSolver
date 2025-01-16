@@ -2,9 +2,9 @@ package ms.sudoku.solver
 
 import ms.sudoku.base.Cell
 import ms.sudoku.base.Group
-import ms.sudoku.base.SudokuStructure
+import ms.sudoku.base.SudokuPuzzle
 
-class SudokuSolver(val sudoku: SudokuStructure) {
+class SudokuSolver(val sudoku: SudokuPuzzle) {
 
     private val possibleCellValues = sudoku.allCells.associate { it to mutableSetOf<Int>() }
 
@@ -16,7 +16,7 @@ class SudokuSolver(val sudoku: SudokuStructure) {
         if (sudoku.allFilledIn()) {
             return true
         }
-        if (illegal() ) {
+        if (illegal()) {
             return false
         }
 
@@ -31,13 +31,16 @@ class SudokuSolver(val sudoku: SudokuStructure) {
         } else {
             val mostPromisingCell = findMostPromisingCell()
             val possibleValueList = mostPromisingCell.possibleValues().toList()
-            possibleValueList.map{ tryValue -> SolutionStep(mostPromisingCell, tryValue) }.forEach { solutionStep ->
-                fillInSolutionStep(solutionStep)
-                solved = solveRecursive()
-                if (solved)
-                    return true
-                takeBackLastSolutionStep(solutionStep)
-            }
+            possibleValueList
+                .filter { tryValue -> sudoku.isLegalByVariantRule(mostPromisingCell.pos, tryValue) }
+                .map { tryValue -> SolutionStep(mostPromisingCell, tryValue) }
+                .forEach { solutionStep ->
+                    fillInSolutionStep(solutionStep)
+                    solved = solveRecursive()
+                    if (solved)
+                        return true
+                    takeBackLastSolutionStep(solutionStep)
+                }
         }
         return false
     }
@@ -59,11 +62,14 @@ class SudokuSolver(val sudoku: SudokuStructure) {
         } else {
             val mostPromisingCell = findMostPromisingCell()
             val possibleValueList = mostPromisingCell.possibleValues().toList()
-            possibleValueList.map{ tryValue -> SolutionStep(mostPromisingCell, tryValue) }.forEach { solutionStep ->
-                fillInSolutionStep(solutionStep)
-                count += countAll()
-                takeBackLastSolutionStep(solutionStep)
-            }
+            possibleValueList
+                .filter { tryValue -> sudoku.isLegalByVariantRule(mostPromisingCell.pos, tryValue) }
+                .map{ tryValue -> SolutionStep(mostPromisingCell, tryValue) }
+                .forEach { solutionStep ->
+                    fillInSolutionStep(solutionStep)
+                    count += countAll()
+                    takeBackLastSolutionStep(solutionStep)
+                }
         }
         return count
     }
@@ -82,10 +88,7 @@ class SudokuSolver(val sudoku: SudokuStructure) {
     }
 
     private fun findNextStep(): SolutionStep? {
-        val solutionStep = algorithm1()
-        if (solutionStep != null)
-            return solutionStep
-        return algorithm2()
+        return algorithm1() ?: algorithm2()
     }
 
     private fun algorithm1(): SolutionStep? {
@@ -144,6 +147,7 @@ class SudokuSolver(val sudoku: SudokuStructure) {
         this.possibleValues().clear()
     }
 
+
+    data class SolutionStep(val cell: Cell, val value: Int)
 }
 
-data class SolutionStep(val cell: Cell, val value: Int)

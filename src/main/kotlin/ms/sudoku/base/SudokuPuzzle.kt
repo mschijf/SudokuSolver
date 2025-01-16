@@ -2,7 +2,7 @@ package ms.sudoku.base
 
 import tool.coordinate.twodimensional.Point
 
-abstract class SudokuStructure() {
+abstract class SudokuPuzzle() {
 
     val defaultValueSet = getDefaultSetDefinition()
 
@@ -29,5 +29,6 @@ abstract class SudokuStructure() {
     }
 
     abstract fun printSudoku()
+    open fun isLegalByVariantRule(point: Point, i: Int): Boolean = true
 
 }

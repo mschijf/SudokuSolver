@@ -1,7 +1,5 @@
-import ms.sudoku.variants.SudokuStructureVijfling
 import ms.sudoku.solver.SudokuSolver
-import ms.sudoku.variants.SudokuStructure9x9Asterisk
-import ms.sudoku.variants.SudokuStructure9x9Normal
+import ms.sudoku.variants.SudokuPuzzle9X9
 import tool.coordinate.twodimensional.Point
 import tool.coordinate.twodimensional.pos
 import java.io.File
@@ -15,7 +13,7 @@ fun main() {
 
     val inputLines = File("data/sudoku_lastig").bufferedReader().readLines()
     val inputCellMap = inputLines.sudokuLinesToMap()
-    val sudoku = SudokuStructure9x9Normal()
+    val sudoku = SudokuPuzzle9X9()
     sudoku.initialFill(inputCellMap)
 
 //    val inputLines = File("data/sudoku_vijfling").bufferedReader().readLines()
@@ -42,7 +40,7 @@ fun solveBulkFile(fileName: String) {
         val sudokuString = line.split("\\s+".toRegex())[1]
         val sudokuLines = sudokuString.chunked(9)
         val inputCellMap = sudokuLines.sudokuLinesToMap()
-        val sudoku = SudokuStructure9x9Normal()
+        val sudoku = SudokuPuzzle9X9()
         sudoku.initialFill(inputCellMap)
         val sudokuSolver = SudokuSolver(sudoku)
         val count = sudokuSolver.countAll()

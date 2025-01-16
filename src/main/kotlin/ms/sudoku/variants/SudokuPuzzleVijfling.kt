@@ -2,14 +2,14 @@ package ms.sudoku.variants
 
 import ms.sudoku.base.Cell
 import ms.sudoku.base.Group
-import ms.sudoku.base.SudokuStructure
+import ms.sudoku.base.SudokuPuzzle
 import tool.coordinate.twodimensional.Point
 import tool.coordinate.twodimensional.pos
 import tool.coordinate.twodimensional.printAsGrid
 import kotlin.collections.plus
 import kotlin.collections.plusAssign
 
-class SudokuStructureVijfling() : SudokuStructure() {
+class SudokuPuzzleVijfling() : SudokuPuzzle() {
 
     override fun getDefaultSetDefinition() = setOf(1,2,3,4,5,6,7,8,9)
 

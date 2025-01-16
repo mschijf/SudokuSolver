@@ -5,7 +5,7 @@ import ms.sudoku.base.Group
 import tool.coordinate.twodimensional.Point
 import tool.coordinate.twodimensional.pos
 
-class SudokuStructure9x9Asterisk: SudokuStructure9x9Base() {
+class SudokuPuzzle9X9Asterisk: SudokuPuzzle9X9Base() {
     override fun makeExtraGroups(cellMap: Map<Point, Cell>): List<Group> {
         val group = Group(
             listOf(
